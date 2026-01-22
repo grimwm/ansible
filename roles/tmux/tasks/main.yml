@@ -1,0 +1,6 @@
+---
+- name: Install tmux
+  ansible.builtin.import_tasks: install.yml
+
+- name: Configure tmux
+  ansible.builtin.import_tasks: config.yml

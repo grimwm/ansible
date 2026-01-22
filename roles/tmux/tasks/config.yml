@@ -1,0 +1,27 @@
+---
+- name: Install tmux.conf on Unix-like systems
+  ansible.builtin.copy:
+    src: tmux.conf
+    dest: "{{ ansible_env.HOME }}/.tmux.conf"
+    mode: "0644"
+  when: ansible_os_family != "Windows"
+
+- name: Install tmux.conf in Windows user profile
+  ansible.windows.win_copy:
+    src: tmux.conf
+    dest: "{{ ansible_env.USERPROFILE }}\\.tmux.conf"
+  when: ansible_os_family == "Windows"
+
+- name: Check for MSYS2 home directory
+  ansible.windows.win_stat:
+    path: "C:\\msys64\\home\\{{ ansible_user_id }}"
+  register: tmux_msys2_home
+  when: ansible_os_family == "Windows"
+
+- name: Install tmux.conf into MSYS2 home (if present)
+  ansible.windows.win_copy:
+    src: tmux.conf
+    dest: "C:\\msys64\\home\\{{ ansible_user_id }}\\.tmux.conf"
+  when:
+    - ansible_os_family == "Windows"
+    - tmux_msys2_home.stat.exists

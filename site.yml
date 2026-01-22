@@ -1,0 +1,6 @@
+---
+- name: Workstation bootstrap
+  hosts: all
+  gather_facts: true
+  roles:
+    - role: tmux

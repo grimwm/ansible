@@ -1,0 +1,12 @@
+---
+- name: Install tmux on Linux
+  ansible.builtin.include_tasks: install_linux.yml
+  when: ansible_system == "Linux"
+
+- name: Install tmux on macOS
+  ansible.builtin.include_tasks: install_macos.yml
+  when: ansible_system == "Darwin"
+
+- name: Install tmux on Windows
+  ansible.builtin.include_tasks: install_windows.yml
+  when: ansible_os_family == "Windows"

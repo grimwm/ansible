@@ -1,0 +1,35 @@
+---
+- name: Check for Homebrew
+  ansible.builtin.command: /usr/bin/which brew
+  register: tmux_brew_which
+  changed_when: false
+  failed_when: false
+
+- name: Install Homebrew (Apple Silicon default)
+  ansible.builtin.shell: |
+    /bin/bash -lc "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  args:
+    creates: /opt/homebrew/bin/brew
+  when: tmux_brew_which.rc != 0
+
+- name: Install Homebrew (Intel default)
+  ansible.builtin.shell: |
+    /bin/bash -lc "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  args:
+    creates: /usr/local/bin/brew
+  when: tmux_brew_which.rc != 0
+
+- name: Set brew path
+  ansible.builtin.set_fact:
+    tmux_brew_bin: >-
+      {{
+        '/opt/homebrew/bin/brew'
+        if (ansible_facts.architecture is defined and ansible_facts.architecture in ['arm64', 'aarch64'])
+        else '/usr/local/bin/brew'
+      }}
+
+- name: Install tmux (macOS)
+  community.general.homebrew:
+    name: tmux
+    state: present
+    path: "{{ tmux_brew_bin }}"
