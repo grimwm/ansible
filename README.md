@@ -8,6 +8,38 @@ This is a small Ansible repo for bootstrapping a machine with **tmux** and insta
   - `%USERPROFILE%\.tmux.conf`
   - `C:\msys64\home\<username>\.tmux.conf` (if that directory exists)
 
+## Prerequisites
+
+### macOS
+
+Install Ansible via Homebrew:
+
+```bash
+brew install ansible
+```
+
+### Linux
+
+Install Ansible via your package manager:
+
+```bash
+# Debian/Ubuntu
+sudo apt install ansible
+
+# Fedora/RHEL
+sudo dnf install ansible
+```
+
+### Windows
+
+Ansible cannot run natively on Windows as a control node. Use WSL (Windows Subsystem for Linux):
+
+```powershell
+wsl --install
+```
+
+Then inside WSL, install Ansible using the Linux instructions above.
+
 ## Quick start (localhost)
 
 ### Linux-only (localhost)
