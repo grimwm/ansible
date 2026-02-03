@@ -1,0 +1,12 @@
+---
+- name: Ensure kitty config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/kitty"
+    state: directory
+    mode: "0755"
+
+- name: Install kitty.conf
+  ansible.builtin.copy:
+    src: kitty.conf
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/kitty/kitty.conf"
+    mode: "0644"

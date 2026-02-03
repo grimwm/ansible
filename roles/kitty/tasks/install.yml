@@ -1,0 +1,8 @@
+---
+- name: Install kitty on Linux
+  ansible.builtin.include_tasks: install_linux.yml
+  when: ansible_facts["system"] == "Linux"
+
+- name: Install kitty on macOS
+  ansible.builtin.include_tasks: install_macos.yml
+  when: ansible_facts["system"] == "Darwin"

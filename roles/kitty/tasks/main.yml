@@ -1,0 +1,6 @@
+---
+- name: Install kitty
+  ansible.builtin.import_tasks: install.yml
+
+- name: Configure kitty
+  ansible.builtin.import_tasks: config.yml
