@@ -3,5 +3,6 @@
   hosts: all
   gather_facts: true
   roles:
+    - role: zsh
     - role: tmux
     - role: kitty

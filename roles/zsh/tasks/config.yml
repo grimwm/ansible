@@ -1,0 +1,24 @@
+---
+- name: Ensure ~/.zshrc.d/ exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.zshrc.d"
+    state: directory
+    mode: "0755"
+  when: ansible_facts["os_family"] != "Windows"
+
+- name: Add sourcing loop to ~/.zshrc
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_facts['env']['HOME'] }}/.zshrc"
+    marker: "# {mark} ANSIBLE MANAGED - source ~/.zshrc.d"
+    block: |
+      for f in ~/.zshrc.d/*.zsh(N); do source "$f"; done
+    create: true
+    mode: "0644"
+  when: ansible_facts["os_family"] != "Windows"
+
+- name: Deploy base zsh config
+  ansible.builtin.copy:
+    src: base.zsh
+    dest: "{{ ansible_facts['env']['HOME'] }}/.zshrc.d/base.zsh"
+    mode: "0644"
+  when: ansible_facts["os_family"] != "Windows"
