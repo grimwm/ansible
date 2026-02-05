@@ -1,0 +1,6 @@
+---
+- name: Install Go
+  ansible.builtin.import_tasks: install.yml
+
+- name: Configure Go
+  ansible.builtin.import_tasks: config.yml

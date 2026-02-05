@@ -1,5 +1,4 @@
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
 export PATH="/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
 
 alias ll='ls -l'

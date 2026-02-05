@@ -1,0 +1,48 @@
+---
+- name: Set Go install directory (Windows)
+  ansible.builtin.set_fact:
+    golang_install_dir: "{{ ansible_facts['env']['USERPROFILE'] }}\\.local\\go"
+
+- name: Check current Go version (Windows)
+  ansible.windows.win_command: "{{ golang_install_dir }}\\bin\\go.exe version"
+  register: golang_current_version
+  changed_when: false
+  failed_when: false
+
+- name: Install Go {{ golang_version }} (Windows)
+  when: >-
+    golang_current_version.rc != 0 or
+    ('go' + golang_version) not in golang_current_version.stdout
+  block:
+    - name: Remove old Go installation (Windows)
+      ansible.windows.win_file:
+        path: "{{ golang_install_dir }}"
+        state: absent
+
+    - name: Download Go zip (Windows)
+      ansible.windows.win_get_url:
+        url: "https://go.dev/dl/go{{ golang_version }}.windows-amd64.zip"
+        dest: "{{ ansible_facts['env']['TEMP'] }}\\go{{ golang_version }}.zip"
+
+    - name: Extract Go zip (Windows)
+      community.windows.win_unzip:
+        src: "{{ ansible_facts['env']['TEMP'] }}\\go{{ golang_version }}.zip"
+        dest: "{{ ansible_facts['env']['TEMP'] }}\\go-extract"
+
+    - name: Move Go to install directory (Windows)
+      ansible.windows.win_shell: >-
+        Move-Item
+        -Path "{{ ansible_facts['env']['TEMP'] }}\go-extract\go"
+        -Destination "{{ golang_install_dir }}"
+
+    - name: Set hidden attribute on Go directory (Windows)
+      ansible.windows.win_command: attrib +h "{{ golang_install_dir }}"
+      changed_when: true
+
+    - name: Clean up temporary files (Windows)
+      ansible.windows.win_file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ ansible_facts['env']['TEMP'] }}\\go{{ golang_version }}.zip"
+        - "{{ ansible_facts['env']['TEMP'] }}\\go-extract"

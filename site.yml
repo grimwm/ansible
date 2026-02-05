@@ -5,6 +5,7 @@
   roles:
     - role: homebrew
     - role: zsh
+    - role: golang
     - role: tmux
     - role: kitty
     - role: iterm2

@@ -1,0 +1,46 @@
+---
+- name: Set Go install directory
+  ansible.builtin.set_fact:
+    golang_install_dir: "{{ ansible_facts['env']['HOME'] }}/.local/go"
+
+- name: Check current Go version
+  ansible.builtin.command: "{{ golang_install_dir }}/bin/go version"
+  register: golang_current_version
+  changed_when: false
+  failed_when: false
+
+- name: Set Go platform variables
+  ansible.builtin.set_fact:
+    golang_arch: "{{ 'arm64' if ansible_facts.architecture in ['arm64', 'aarch64'] else 'amd64' }}"
+    golang_os: "{{ 'darwin' if ansible_facts['system'] == 'Darwin' else 'linux' }}"
+
+- name: Install Go {{ golang_version }}
+  when: >-
+    golang_current_version.rc != 0 or
+    ('go' + golang_version) not in golang_current_version.stdout
+  block:
+    - name: Remove old Go installation
+      ansible.builtin.file:
+        path: "{{ golang_install_dir }}"
+        state: absent
+
+    - name: Create Go install directory
+      ansible.builtin.file:
+        path: "{{ golang_install_dir }}"
+        state: directory
+
+    - name: Download Go tarball
+      ansible.builtin.get_url:
+        url: "https://go.dev/dl/go{{ golang_version }}.{{ golang_os }}-{{ golang_arch }}.tar.gz"
+        dest: "/tmp/go{{ golang_version }}.tar.gz"
+        mode: "0644"
+
+    - name: Extract Go tarball to install directory
+      ansible.builtin.command:
+        cmd: tar zxf /tmp/go{{ golang_version }}.tar.gz --strip-components=1 -C {{ golang_install_dir }}
+        creates: "{{ golang_install_dir }}/bin/go"
+
+    - name: Remove downloaded tarball
+      ansible.builtin.file:
+        path: "/tmp/go{{ golang_version }}.tar.gz"
+        state: absent

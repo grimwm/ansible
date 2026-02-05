@@ -1,0 +1,24 @@
+---
+- name: Deploy Go shell configuration
+  ansible.builtin.copy:
+    src: golang.zsh
+    dest: "{{ ansible_facts['env']['HOME'] }}/.zshrc.d/golang.zsh"
+    mode: "0644"
+  when: ansible_facts["os_family"] != "Windows"
+
+- name: Set GOROOT environment variable (Windows)
+  ansible.windows.win_environment:
+    name: GOROOT
+    value: "{{ golang_install_dir }}"
+    level: user
+    state: present
+  when: ansible_facts["os_family"] == "Windows"
+
+- name: Add Go to PATH (Windows)
+  ansible.windows.win_path:
+    elements:
+      - "{{ golang_install_dir }}\\bin"
+      - "{{ ansible_facts['env']['USERPROFILE'] }}\\go\\bin"
+    scope: user
+    state: present
+  when: ansible_facts["os_family"] == "Windows"

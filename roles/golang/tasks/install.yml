@@ -1,0 +1,8 @@
+---
+- name: Install Go on Unix
+  ansible.builtin.include_tasks: install_unix.yml
+  when: ansible_facts["system"] in ["Darwin", "Linux"]
+
+- name: Install Go on Windows
+  ansible.builtin.include_tasks: install_windows.yml
+  when: ansible_facts["os_family"] == "Windows"
