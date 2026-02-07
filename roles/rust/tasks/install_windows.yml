@@ -1,0 +1,30 @@
+---
+- name: Set rustup download URL
+  ansible.builtin.set_fact:
+    rust_rustup_url: >-
+      {{
+        'https://win.rustup.rs/aarch64'
+        if ansible_facts.architecture in ['arm64', 'aarch64']
+        else 'https://win.rustup.rs/x86_64'
+      }}
+
+- name: Check if rustup is installed (Windows)
+  ansible.windows.win_stat:
+    path: "{{ ansible_facts['env']['USERPROFILE'] }}\\.cargo\\bin\\rustup.exe"
+  register: rust_rustup_bin
+
+- name: Install Rust via rustup (Windows)
+  when: not rust_rustup_bin.stat.exists
+  block:
+    - name: Download rustup-init.exe
+      ansible.windows.win_get_url:
+        url: "{{ rust_rustup_url }}"
+        dest: "{{ ansible_facts['env']['TEMP'] }}\\rustup-init.exe"
+
+    - name: Run rustup-init.exe
+      ansible.windows.win_command: "{{ ansible_facts['env']['TEMP'] }}\\rustup-init.exe -y"
+
+    - name: Clean up rustup-init.exe
+      ansible.windows.win_file:
+        path: "{{ ansible_facts['env']['TEMP'] }}\\rustup-init.exe"
+        state: absent
