@@ -1,0 +1,7 @@
+---
+- name: Deploy Rust shell configuration
+  ansible.builtin.copy:
+    src: rust.zsh
+    dest: "{{ ansible_facts['env']['HOME'] }}/.zshrc.d/rust.zsh"
+    mode: "0644"
+  when: ansible_facts["os_family"] != "Windows"

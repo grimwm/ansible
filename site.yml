@@ -2,10 +2,15 @@
 - name: Workstation bootstrap
   hosts: all
   gather_facts: true
+  vars:
+    # dev_machine: false  # set to true to install dev tools (golang, rust)
   roles:
     - role: homebrew
     - role: zsh
     - role: golang
+      when: dev_machine | default(false) | bool
+    - role: rust
+      when: dev_machine | default(false) | bool
     - role: tmux
     - role: kitty
     - role: iterm2
