@@ -323,6 +323,8 @@ require("lazy").setup({
                     ["<CR>"] = "open",
                     ["s"] = "open_split",
                     ["v"] = "open_vsplit",
+                    ["<C-f>"] = "none",
+                    ["<C-b>"] = "none",
                 },
             },
             filesystem = {
