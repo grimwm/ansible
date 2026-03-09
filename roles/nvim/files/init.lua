@@ -185,6 +185,27 @@ vim.lsp.config("pyright", {
     },
 })
 
+vim.lsp.config("intelephense", {
+    settings = {
+        intelephense = {
+            stubs = {
+                "apache", "bcmath", "bz2", "calendar", "com_dotnet", "Core",
+                "ctype", "curl", "date", "dba", "dom", "enchant", "exif",
+                "FFI", "fileinfo", "filter", "fpm", "ftp", "gd", "gettext",
+                "gmp", "hash", "iconv", "imap", "intl", "json", "ldap",
+                "libxml", "mbstring", "meta", "mysqli", "oci8", "odbc",
+                "openssl", "pcntl", "pcre", "PDO", "pdo_ibm", "pdo_mysql",
+                "pdo_pgsql", "pdo_sqlite", "pgsql", "Phar", "posix",
+                "pspell", "readline", "Reflection", "session", "shmop",
+                "SimpleXML", "snmp", "soap", "sockets", "sodium", "SPL",
+                "sqlite3", "standard", "superglobals", "sysvmsg", "sysvsem",
+                "sysvshm", "tidy", "tokenizer", "xml", "xmlreader",
+                "xmlrpc", "xmlwriter", "xsl", "Zend OPcache", "zip", "zlib",
+            },
+        },
+    },
+})
+
 vim.lsp.config("lua_ls", {
     settings = {
         Lua = {
@@ -376,6 +397,7 @@ require("lazy").setup({
                 "html", "javascript", "json", "jsonc",
                 "lua", "luadoc",
                 "markdown", "markdown_inline",
+                "php", "phpdoc",
                 "python",
                 "query", "regex",
                 "rust", "toml",
@@ -420,6 +442,7 @@ require("lazy").setup({
                 "gopls",
                 "pyright",
                 "lua_ls",
+                "intelephense",
             },
             automatic_enable = true,
         },
@@ -510,6 +533,7 @@ require("lazy").setup({
                 yaml = { "prettier" },
                 markdown = { "prettier" },
                 lua = { "stylua" },
+                php = { "php_cs_fixer" },
                 python = { "ruff_format" },
                 rust = { "rustfmt" },
             },
