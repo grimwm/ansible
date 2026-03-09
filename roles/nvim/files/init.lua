@@ -317,6 +317,7 @@ require("lazy").setup({
         opts = {
             open_files_do_not_replace_types = { "terminal", "trouble", "qf" },
             window = {
+                position = "left",
                 width = 30,
                 mappings = {
                     ["<CR>"] = "open",
@@ -327,16 +328,25 @@ require("lazy").setup({
             filesystem = {
                 follow_current_file = { enabled = true },
                 filtered_items = { visible = true },
-                hijack_netrw_behavior = "open_current",
+                hijack_netrw_behavior = "disabled",
             },
         },
         init = function()
+            -- Disable netrw early so it doesn't conflict
+            vim.g.loaded_netrwPlugin = 1
+            vim.g.loaded_netrw = 1
             -- Open Neo-tree automatically when nvim is started with a directory
             vim.api.nvim_create_autocmd("VimEnter", {
                 callback = function(data)
                     if vim.fn.isdirectory(data.file) == 1 then
                         vim.cmd.cd(data.file)
-                        require("neo-tree.command").execute({ toggle = false, dir = data.file })
+                        -- Open as a sidebar, not in the current buffer
+                        require("neo-tree.command").execute({
+                            action = "focus",
+                            source = "filesystem",
+                            position = "left",
+                            dir = data.file,
+                        })
                     end
                 end,
             })
