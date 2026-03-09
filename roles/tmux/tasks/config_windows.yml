@@ -1,0 +1,16 @@
+---
+- name: Install tmux.conf in Windows user profile
+  ansible.windows.win_copy:
+    src: tmux.conf
+    dest: "{{ ansible_facts['env']['USERPROFILE'] }}\\.tmux.conf"
+
+- name: Check for MSYS2 home directory
+  ansible.windows.win_stat:
+    path: "C:\\msys64\\home\\{{ ansible_facts['user_id'] }}"
+  register: tmux_msys2_home
+
+- name: Install tmux.conf into MSYS2 home (if present)
+  ansible.windows.win_copy:
+    src: tmux.conf
+    dest: "C:\\msys64\\home\\{{ ansible_facts['user_id'] }}\\.tmux.conf"
+  when: tmux_msys2_home.stat.exists

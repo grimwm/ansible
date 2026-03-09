@@ -1,0 +1,6 @@
+---
+- name: Install tmux.conf
+  ansible.builtin.copy:
+    src: tmux.conf
+    dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf"
+    mode: "0644"
