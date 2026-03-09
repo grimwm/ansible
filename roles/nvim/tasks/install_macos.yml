@@ -1,0 +1,6 @@
+---
+- name: Install neovim (macOS)
+  community.general.homebrew:
+    name: neovim
+    state: present
+    path: "{{ homebrew_brew_bin }}"

@@ -11,6 +11,8 @@
       when: dev_machine | default(false) | bool
     - role: rust
       when: dev_machine | default(false) | bool
+    - role: nvim
+      when: dev_machine | default(false) | bool
     - role: tmux
     - role: kitty
     - role: iterm2

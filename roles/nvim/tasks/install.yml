@@ -1,0 +1,12 @@
+---
+- name: Install nvim on Linux
+  ansible.builtin.include_tasks: install_linux.yml
+  when: ansible_facts["system"] == "Linux"
+
+- name: Install nvim on macOS
+  ansible.builtin.include_tasks: install_macos.yml
+  when: ansible_facts["system"] == "Darwin"
+
+- name: Install nvim on Windows
+  ansible.builtin.include_tasks: install_windows.yml
+  when: ansible_facts["os_family"] == "Windows"
