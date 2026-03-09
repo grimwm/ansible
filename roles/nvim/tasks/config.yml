@@ -1,0 +1,8 @@
+---
+- name: Configure nvim on Unix-like systems
+  ansible.builtin.include_tasks: config_unix.yml
+  when: ansible_facts["os_family"] != "Windows"
+
+- name: Configure nvim on Windows
+  ansible.builtin.include_tasks: config_windows.yml
+  when: ansible_facts["os_family"] == "Windows"

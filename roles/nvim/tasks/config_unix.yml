@@ -1,0 +1,12 @@
+---
+- name: Ensure nvim config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/nvim"
+    state: directory
+    mode: "0755"
+
+- name: Install init.lua
+  ansible.builtin.copy:
+    src: init.lua
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua"
+    mode: "0644"

@@ -1,0 +1,10 @@
+---
+- name: Ensure nvim config directory exists
+  ansible.windows.win_file:
+    path: "{{ ansible_facts['env']['LOCALAPPDATA'] }}\\nvim"
+    state: directory
+
+- name: Install init.lua
+  ansible.windows.win_copy:
+    src: init.lua
+    dest: "{{ ansible_facts['env']['LOCALAPPDATA'] }}\\nvim\\init.lua"
