@@ -510,36 +510,12 @@ require("lazy").setup({
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter").setup()
-			require("nvim-treesitter").install({
-				"bash",
-				"c",
-				"css",
-				"diff",
-				"dockerfile",
-				"go",
-				"gomod",
-				"gosum",
-				"html",
-				"javascript",
-				"json",
-				"jsonc",
-				"lua",
-				"luadoc",
-				"markdown",
-				"markdown_inline",
-				"php",
-				"phpdoc",
-				"python",
-				"query",
-				"regex",
-				"rust",
-				"toml",
-				"tsx",
-				"typescript",
-				"vim",
-				"vimdoc",
-				"yaml",
-			})
+			-- Silence the logger so installs don't trigger "Press ENTER"
+			local log = require("nvim-treesitter.log")
+			local orig_info = log.Logger.info
+			log.Logger.info = log.Logger.debug
+			require("nvim-treesitter").install("all")
+			log.Logger.info = orig_info
 		end,
 	},
 
