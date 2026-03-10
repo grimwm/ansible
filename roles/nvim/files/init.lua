@@ -178,10 +178,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+-- Add Mason bin to PATH so LSP servers are found
+vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
+
 --------------------------------------------------------------------------------
 -- LSP server configurations (native vim.lsp.config)
 --------------------------------------------------------------------------------
 vim.lsp.config("rust_analyzer", {
+	cmd = { "rust-analyzer" },
+	filetypes = { "rust" },
+	root_markers = { "Cargo.toml", "rust-project.json" },
 	settings = {
 		["rust-analyzer"] = {
 			checkOnSave = { command = "clippy" },
@@ -192,6 +198,9 @@ vim.lsp.config("rust_analyzer", {
 })
 
 vim.lsp.config("gopls", {
+	cmd = { "gopls" },
+	filetypes = { "go", "gomod", "gowork", "gotmpl" },
+	root_markers = { "go.work", "go.mod", ".git" },
 	settings = {
 		gopls = {
 			analyses = { unusedparams = true, shadow = true },
@@ -202,6 +211,9 @@ vim.lsp.config("gopls", {
 })
 
 vim.lsp.config("pyright", {
+	cmd = { "pyright-langserver", "--stdio" },
+	filetypes = { "python" },
+	root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "pyrightconfig.json", ".git" },
 	settings = {
 		python = {
 			analysis = {
@@ -214,6 +226,9 @@ vim.lsp.config("pyright", {
 })
 
 vim.lsp.config("intelephense", {
+	cmd = { "intelephense", "--stdio" },
+	filetypes = { "php" },
+	root_markers = { "composer.json", ".git" },
 	settings = {
 		intelephense = {
 			stubs = {
@@ -294,6 +309,9 @@ vim.lsp.config("intelephense", {
 })
 
 vim.lsp.config("lua_ls", {
+	cmd = { "lua-language-server" },
+	filetypes = { "lua" },
+	root_markers = { ".luarc.json", ".luarc.jsonc", ".stylua.toml", "stylua.toml", ".git" },
 	settings = {
 		Lua = {
 			runtime = { version = "LuaJIT" },
@@ -467,7 +485,7 @@ require("lazy").setup({
 	{
 		"nvim-telescope/telescope.nvim",
 		event = "VimEnter",
-		branch = "0.1.x",
+		branch = "master",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{
