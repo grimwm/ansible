@@ -88,6 +88,14 @@ vim.api.nvim_create_autocmd("TermOpen", {
 	end,
 })
 
+-- Disable horizontal mouse scrolling in Neo-tree
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "neo-tree",
+	callback = function()
+		vim.opt_local.mousescroll = "ver:3,hor:0"
+	end,
+})
+
 -- Override :terminal to open in the main window when called from a sidebar
 vim.api.nvim_create_user_command("Terminal", function()
 	local win = vim.api.nvim_get_current_win()
@@ -359,6 +367,8 @@ require("lazy").setup({
 		},
 		init = function()
 			vim.cmd.colorscheme("catppuccin")
+			vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#89b4fa", bold = true })
+			vim.api.nvim_set_hl(0, "NeoTreeWinSeparator", { fg = "#89b4fa", bold = true })
 		end,
 	},
 
