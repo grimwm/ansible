@@ -11,3 +11,8 @@
   ansible.builtin.package:
     name: neovim
     state: present
+
+- name: Install tree-sitter CLI via npm (Linux)
+  ansible.builtin.command: npm install -g tree-sitter-cli
+  args:
+    creates: /usr/local/bin/tree-sitter

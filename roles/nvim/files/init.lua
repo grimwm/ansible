@@ -510,12 +510,7 @@ require("lazy").setup({
 		build = ":TSUpdate",
 		config = function()
 			require("nvim-treesitter").setup()
-			-- Silence the logger so installs don't trigger "Press ENTER"
-			local log = require("nvim-treesitter.log")
-			local orig_info = log.Logger.info
-			log.Logger.info = log.Logger.debug
 			require("nvim-treesitter").install("all")
-			log.Logger.info = orig_info
 		end,
 	},
 

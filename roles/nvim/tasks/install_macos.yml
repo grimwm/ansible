@@ -4,3 +4,9 @@
     name: neovim
     state: present
     path: "{{ homebrew_brew_bin }}"
+
+- name: Install tree-sitter CLI (macOS)
+  community.general.homebrew:
+    name: tree-sitter
+    state: present
+    path: "{{ homebrew_brew_bin }}"
