@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd("FileType", {
 --------------------------------------------------------------------------------
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- Window navigation
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus left" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus right" })
@@ -396,7 +396,7 @@ require("lazy").setup({
 					{ "filename", path = 1 },
 					{
 						function()
-							return "Esc Esc for normal mode"
+							return "Esc for normal mode"
 						end,
 						cond = function()
 							return vim.bo.buftype == "terminal"
