@@ -63,6 +63,7 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus left" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus right" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus down" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus up" })
+vim.keymap.set("n", "<C-w>'", "<cmd>vnew<CR>", { desc = "Open new window to the right" })
 
 -- Buffer navigation
 vim.keymap.set("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
