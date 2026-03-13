@@ -199,7 +199,8 @@ vim.lsp.config("rust_analyzer", {
 	root_markers = { "Cargo.toml", "rust-project.json" },
 	settings = {
 		["rust-analyzer"] = {
-			checkOnSave = { command = "clippy" },
+			checkOnSave = true,
+			check = { command = "clippy" },
 			cargo = { allFeatures = true },
 			procMacro = { enable = true },
 		},
