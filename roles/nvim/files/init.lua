@@ -538,10 +538,9 @@ require("lazy").setup({
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
-		config = function()
-			require("nvim-treesitter").setup()
-			require("nvim-treesitter").install("all")
-		end,
+		opts = {
+			ensure_installed = "all",
+		},
 	},
 
 	---------------------------------------------------------------------------
