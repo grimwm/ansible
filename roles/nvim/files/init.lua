@@ -371,6 +371,8 @@ require("lazy").setup({
 			vim.cmd.colorscheme("catppuccin")
 			vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#89b4fa", bold = true })
 			vim.api.nvim_set_hl(0, "NeoTreeWinSeparator", { fg = "#89b4fa", bold = true })
+			vim.api.nvim_set_hl(0, "FloatBorder", { fg = "#fab387" })
+			vim.o.winborder = "rounded"
 		end,
 	},
 
