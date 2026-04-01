@@ -1,8 +1,22 @@
 ---
-- name: Deploy Go shell configuration
+- name: Ensure ~/.bashrc.d exists (POSIX shells / bash)
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc.d"
+    state: directory
+    mode: "0755"
+  when: ansible_facts["os_family"] != "Windows"
+
+- name: Deploy Go shell configuration for zsh
   ansible.builtin.copy:
     src: golang.zsh
     dest: "{{ ansible_facts['env']['HOME'] }}/.zshrc.d/golang.zsh"
+    mode: "0644"
+  when: ansible_facts["os_family"] != "Windows"
+
+- name: Deploy Go shell configuration for bash
+  ansible.builtin.copy:
+    src: golang.zsh
+    dest: "{{ ansible_facts['env']['HOME'] }}/.bashrc.d/golang.sh"
     mode: "0644"
   when: ansible_facts["os_family"] != "Windows"
 
