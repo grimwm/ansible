@@ -59,6 +59,21 @@ ansible-galaxy collection install -r requirements.yml
 ansible-playbook -K site.yml
 ```
 
+## Windows roles
+
+When run against a Windows host, `site.yml` also applies:
+
+- **wsl2**: enables the WSL + Virtual Machine Platform features, updates the WSL
+  kernel, installs a default distro (`wsl_default_distribution`, default
+  `Ubuntu`, which tracks the newest stable Ubuntu LTS) via `wsl --install`, and
+  writes `~/.wslconfig`.
+- **windows-dev** (only with `dev_machine=true`): installs dev tooling via
+  `winget` (Windows Terminal, Git, VS Code, Docker Desktop, etc.) and creates
+  `Documents\Repositories` / `Documents\WSL`.
+
+Override defaults in `roles/wsl2/defaults/main.yml` and
+`roles/windows-dev/defaults/main.yml` (or via inventory vars).
+
 ## Notes
 
 - On **Windows**, `winget` must already be available (Windows 10/11 with App Installer).

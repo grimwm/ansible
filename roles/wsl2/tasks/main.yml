@@ -1,0 +1,4 @@
+---
+- name: Set up WSL2 on Windows
+  ansible.builtin.include_tasks: install_windows.yml
+  when: ansible_facts["os_family"] == "Windows"

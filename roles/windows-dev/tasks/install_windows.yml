@@ -1,0 +1,18 @@
+---
+- name: Ensure winget is available
+  ansible.windows.win_command: winget --version
+  register: windows_dev_winget_version
+  changed_when: false
+
+- name: Install Windows dev packages (via winget)
+  community.windows.win_winget:
+    name: "{{ item }}"
+    state: present
+    exact: true
+  loop: "{{ windows_dev_packages }}"
+
+- name: Create Windows dev directories
+  ansible.windows.win_file:
+    path: "{{ ansible_facts['env']['USERPROFILE'] }}\\{{ item }}"
+    state: directory
+  loop: "{{ windows_dev_directories }}"

@@ -1,0 +1,16 @@
+---
+# winget package IDs to install on Windows dev machines.
+# Find IDs with: winget search <name>
+windows_dev_packages:
+  - Microsoft.WindowsTerminal
+  - Git.Git
+  - Microsoft.VisualStudioCode
+  - Docker.DockerDesktop
+  - Postman.Postman
+  - 7zip.7zip
+  - Notepad++.Notepad++
+
+# Directories created under the user profile.
+windows_dev_directories:
+  - "Documents\\Repositories"
+  - "Documents\\WSL"

@@ -4,3 +4,4 @@
 
 - name: Configure kitty
   ansible.builtin.import_tasks: config.yml
+  when: ansible_facts["os_family"] != "Windows"
