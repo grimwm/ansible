@@ -28,16 +28,28 @@
 
 - name: List installed WSL distributions
   ansible.windows.win_command: wsl --list --quiet
+  environment:
+    WSL_UTF8: "1"
   register: wsl_installed
   changed_when: false
   failed_when: false
 
 - name: Install default WSL distribution
-  ansible.windows.win_command: "wsl --install -d {{ wsl_default_distribution }} --no-launch"
-  when: wsl_default_distribution not in (wsl_installed.stdout | default(''))
+  ansible.windows.win_command:
+    argv:
+      - wsl
+      - --install
+      - --distribution
+      - "{{ wsl_default_distribution }}"
+      - --no-launch
+  when: wsl_default_distribution not in (wsl_installed.stdout_lines | default([]) | map('trim') | list)
 
 - name: Set the default WSL distribution
-  ansible.windows.win_command: "wsl --set-default {{ wsl_default_distribution }}"
+  ansible.windows.win_command:
+    argv:
+      - wsl
+      - --set-default
+      - "{{ wsl_default_distribution }}"
   changed_when: false
 
 - name: Configure WSL settings (.wslconfig)
