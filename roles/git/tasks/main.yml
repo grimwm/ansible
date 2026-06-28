@@ -1,3 +1,6 @@
 ---
+- name: Configure global git settings and aliases
+  ansible.builtin.import_tasks: config_git.yml
+
 - name: Configure git prompt
   ansible.builtin.import_tasks: config.yml

@@ -1,0 +1,11 @@
+---
+# Distribution installed via `wsl --install -d <name>`.
+# Use `wsl --list --online` on the host to see valid names.
+wsl_default_distribution: "Ubuntu-22.04"
+
+# Written to %USERPROFILE%\.wslconfig
+wsl_config:
+  memory: "4GB"
+  processors: 2
+  swap: "2GB"
+  localhostForwarding: true
