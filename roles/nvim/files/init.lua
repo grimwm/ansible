@@ -190,6 +190,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- Add Mason bin to PATH so LSP servers are found
 vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
 
+-- Add Go toolchain and GOPATH bin so Mason can install go-based tools (gopls, gofumpt)
+vim.env.PATH = vim.fn.expand("~/.local/go/bin") .. ":" .. vim.fn.expand("~/go/bin") .. ":" .. vim.env.PATH
+
 --------------------------------------------------------------------------------
 -- LSP server configurations (native vim.lsp.config)
 --------------------------------------------------------------------------------
@@ -575,6 +578,22 @@ require("lazy").setup({
     },
   },
 
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "mason-org/mason.nvim" },
+    opts = {
+      ensure_installed = {
+        "prettier",
+        "stylua",
+        "gofumpt",
+        "goimports",
+        "php-cs-fixer",
+        "ruff",
+      },
+      run_on_start = true,
+    },
+  },
+
   ---------------------------------------------------------------------------
   -- Autocompletion
   ---------------------------------------------------------------------------
@@ -654,7 +673,7 @@ require("lazy").setup({
       },
     },
     opts = {
-      notify_on_error = false,
+      notify_on_error = true,
       format_on_save = { timeout_ms = 2000, lsp_format = "fallback" },
       formatters_by_ft = {
         go = { "gofumpt", "goimports" },
