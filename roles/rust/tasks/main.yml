@@ -1,6 +1,8 @@
 ---
 - name: Install Rust
   ansible.builtin.import_tasks: install.yml
+  tags: install
 
 - name: Configure Rust
   ansible.builtin.import_tasks: config.yml
+  tags: config

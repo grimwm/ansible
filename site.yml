@@ -5,24 +5,44 @@
   vars:
     # dev_machine: false  ## Install dev tools: golang, rust, nvim, git (true|false)
   roles:
+    # Tagged "always" because it resolves homebrew_brew_bin, which the macOS
+    # install tasks in tmux/kitty/iterm2/nvim consume. Narrowing a run with
+    # --tags would otherwise leave that fact undefined. Skip with
+    # --skip-tags homebrew.
     - role: homebrew
+      tags: [homebrew, always]
+
     - role: zsh
+      tags: [zsh, shell]
     - role: bash
+      tags: [bash, shell]
+
     - role: golang
       when: dev_machine | default(false) | bool
+      tags: [golang, dev]
     - role: rust
       when: dev_machine | default(false) | bool
+      tags: [rust, dev]
     - role: nvim
       when: dev_machine | default(false) | bool
+      tags: [nvim, dev]
     - role: git
       when: dev_machine | default(false) | bool
+      tags: [git, dev]
+
     - role: tmux
+      tags: [tmux, terminal]
     - role: kitty
+      tags: [kitty, terminal]
     - role: iterm2
+      tags: [iterm2, terminal]
+
     # Windows-only roles (skipped automatically on Linux/macOS)
     - role: wsl2
       when: ansible_facts["os_family"] == "Windows"
+      tags: [wsl2, windows]
     - role: windows-dev
       when:
         - ansible_facts["os_family"] == "Windows"
         - dev_machine | default(false) | bool
+      tags: [windows-dev, windows, dev]

@@ -2,6 +2,8 @@
 - name: Configure global git settings and aliases
   ansible.builtin.import_tasks: config_git.yml
   when: ansible_facts["os_family"] != "Windows"
+  tags: config
 
 - name: Configure git prompt
   ansible.builtin.import_tasks: config.yml
+  tags: config

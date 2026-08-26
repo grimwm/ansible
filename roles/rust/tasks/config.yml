@@ -1,4 +1,13 @@
 ---
+# The zsh role normally creates this, but it is skipped when a run is narrowed
+# with --tags, and copy will not create parent directories.
+- name: Ensure shell drop-in directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.zshrc.d"
+    state: directory
+    mode: "0755"
+  when: ansible_facts["os_family"] != "Windows"
+
 - name: Deploy Rust shell configuration
   ansible.builtin.copy:
     src: rust.zsh
