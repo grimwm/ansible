@@ -1,7 +1,7 @@
 ---
 # Set these (e.g. in inventory/host_vars) to configure global identity.
-# git_user_name: "Your Name"
-# git_user_email: "you@example.com"
+# git_user_name: "Your Name"  ## Global git identity name (e.g. "Will Grim")
+# git_user_email: "you@example.com"  ## Global git identity email
 
 git_aliases:
   - { alias: "amend", command: "!git ci --amend" }

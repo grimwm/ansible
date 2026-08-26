@@ -3,7 +3,7 @@
 # The bare "Ubuntu" name always tracks the newest stable Ubuntu LTS. Pin to a
 # specific release (e.g. "Ubuntu-24.04") if you need reproducibility.
 # Use `wsl --list --online` on the host to see valid names.
-wsl_default_distribution: "Ubuntu"
+wsl_default_distribution: "Ubuntu"  ## WSL distro to install; a bare name tracks newest LTS (e.g. Ubuntu-24.04)
 
 # Written to %USERPROFILE%\.wslconfig
 wsl_config:

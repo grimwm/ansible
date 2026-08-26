@@ -3,7 +3,7 @@
   hosts: all
   gather_facts: true
   vars:
-    # dev_machine: false  # set to true to install dev tools (golang, rust)
+    # dev_machine: false  ## Install dev tools: golang, rust, nvim, git (true|false)
   roles:
     - role: homebrew
     - role: zsh
