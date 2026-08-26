@@ -4,14 +4,37 @@ PLAYBOOK := ansible-playbook site.yml
 # macOS uses Homebrew for installs so become is never required.
 BECOME_FLAG := $(shell [ "$$(uname -s)" = Linux ] && echo -K)
 
-.PHONY: help dev base
+# Raw ansible-playbook arguments, forwarded verbatim.
+#   make provision ARGS=-edev_machine=true
+#   make provision ARGS="--tags tmux --check"
+ARGS ?=
+
+# Files scanned by `make vars` for variables documented with a `## ` comment.
+VAR_SOURCES := site.yml $(wildcard roles/*/defaults/main.yml)
+
+.PHONY: help vars provision provision-dev
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "  %-12s %s\n", $$1, $$2}'
+		awk 'BEGIN {FS = ":.*?## "}; {printf "  %-16s %s\n", $$1, $$2}'
+	@printf '\nForward ansible flags with ARGS, e.g.\n'
+	@printf '  make provision ARGS=-edev_machine=true\n'
+	@printf '  make provision ARGS="--tags tmux --check"\n'
+	@printf '\nRun "make vars" to list variables you can pass with -e.\n'
 
-dev: ## Provision with dev tools (golang, rust, nvim, git)
-	$(PLAYBOOK) -e dev_machine=true $(BECOME_FLAG)
+vars: ## List documented variables that can be passed with -e<name>=<value>
+	@printf '  %-26s %-18s %s\n' NAME DEFAULT DESCRIPTION
+	@grep -hE '^[[:space:]]*#?[[:space:]]*[a-z_]+:.*##' $(VAR_SOURCES) | sort | \
+		awk -F'##' '{ \
+			h = $$1; d = $$2; \
+			sub(/^[[:space:]]*#?[[:space:]]*/, "", h); \
+			n = h; sub(/:.*/, "", n); \
+			v = h; sub(/^[^:]*:[[:space:]]*/, "", v); gsub(/"/, "", v); \
+			sub(/[[:space:]]+$$/, "", v); sub(/^[[:space:]]+/, "", d); \
+			printf "  %-26s %-18s %s\n", n, v, d }'
 
-base: ## Provision without dev tools
-	$(PLAYBOOK) $(BECOME_FLAG)
+provision: ## Provision this machine
+	$(PLAYBOOK) $(BECOME_FLAG) $(ARGS)
+
+provision-dev: ## Provision including dev tools (golang, rust, nvim, git)
+	$(PLAYBOOK) $(BECOME_FLAG) -e dev_machine=true $(ARGS)

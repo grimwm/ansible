@@ -1,11 +1,4 @@
 ---
-- name: Ensure ~/.bashrc.d exists (POSIX shells / bash)
-  ansible.builtin.file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc.d"
-    state: directory
-    mode: "0755"
-  when: ansible_facts["os_family"] != "Windows"
-
 - name: Deploy Go shell configuration for zsh
   ansible.builtin.copy:
     src: golang.zsh
