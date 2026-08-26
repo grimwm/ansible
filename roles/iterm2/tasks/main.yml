@@ -1,3 +1,4 @@
 ---
 - name: Install iTerm2
   ansible.builtin.import_tasks: install.yml
+  tags: install

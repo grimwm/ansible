@@ -1,3 +1,4 @@
 ---
 - name: Configure bash
   ansible.builtin.import_tasks: config.yml
+  tags: config

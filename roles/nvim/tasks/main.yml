@@ -1,6 +1,8 @@
 ---
 - name: Install nvim
   ansible.builtin.import_tasks: install.yml
+  tags: install
 
 - name: Configure nvim
   ansible.builtin.import_tasks: config.yml
+  tags: config

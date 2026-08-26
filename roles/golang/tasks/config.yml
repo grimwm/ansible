@@ -1,4 +1,16 @@
 ---
+# The zsh/bash roles normally create these, but they are skipped when a run is
+# narrowed with --tags, and copy will not create parent directories.
+- name: Ensure shell drop-in directories exist
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - .zshrc.d
+    - .bashrc.d
+  when: ansible_facts["os_family"] != "Windows"
+
 - name: Deploy Go shell configuration for zsh
   ansible.builtin.copy:
     src: golang.zsh
