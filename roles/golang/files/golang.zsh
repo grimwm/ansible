@@ -6,4 +6,7 @@
 # the role's tarball install lives in ~/.local/go, whose bin dir is added
 # here (a nonexistent entry is harmless on macOS, where that install is
 # removed).
+# Clear any inherited GOROOT (an old launchd setenv, a stale login session)
+# so it cannot override go's own root detection with a dead install.
+unset GOROOT
 export PATH="$HOME/.local/go/bin:$HOME/go/bin:$PATH"
