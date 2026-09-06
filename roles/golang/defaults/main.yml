@@ -1,2 +1,2 @@
 ---
-golang_version: "1.25.6"  ## Go toolchain version to install (e.g. 1.26.0)
+golang_version: "1.26.4"  ## Go toolchain version for the LINUX tarball install only; macOS uses Homebrew
