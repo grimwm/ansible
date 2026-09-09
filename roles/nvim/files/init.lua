@@ -109,7 +109,13 @@ vim.api.nvim_create_user_command("Terminal", function()
   end
   vim.cmd("terminal")
 end, {})
-vim.cmd("cabbrev terminal Terminal")
+-- Only expand at the start of a ":" command line, never in "/" or "?" search
+vim.keymap.set("ca", "terminal", function()
+  if vim.fn.getcmdtype() == ":" and vim.fn.getcmdline() == "terminal" then
+    return "Terminal"
+  end
+  return "terminal"
+end, { expr = true })
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
