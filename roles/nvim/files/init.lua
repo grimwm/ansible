@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd("FileType", {
 --------------------------------------------------------------------------------
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-vim.keymap.set("t", "<C-]>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<C-BS>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 -- Window navigation
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus left" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus right" })
@@ -109,7 +109,13 @@ vim.api.nvim_create_user_command("Terminal", function()
   end
   vim.cmd("terminal")
 end, {})
-vim.cmd("cabbrev terminal Terminal")
+-- Only expand at the start of a ":" command line, never in "/" or "?" search
+vim.keymap.set("ca", "terminal", function()
+  if vim.fn.getcmdtype() == ":" and vim.fn.getcmdline() == "terminal" then
+    return "Terminal"
+  end
+  return "terminal"
+end, { expr = true })
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -408,7 +414,7 @@ require("lazy").setup({
           { "filename", path = 1 },
           {
             function()
-              return "C-] for normal mode"
+              return "C-BS for normal mode"
             end,
             cond = function()
               return vim.bo.buftype == "terminal"
