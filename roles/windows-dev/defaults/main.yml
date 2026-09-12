@@ -14,3 +14,6 @@ windows_dev_packages:
 windows_dev_directories:
   - "Documents\\Repositories"
   - "Documents\\WSL"
+
+# Directory under %USERPROFILE% where Watch-OutlookGraph.ps1 is deployed.
+windows_dev_outlook_monitor_dir: "outlook-graph-monitor"

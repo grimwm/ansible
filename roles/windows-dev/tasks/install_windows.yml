@@ -16,3 +16,13 @@
     path: "{{ ansible_facts['env']['USERPROFILE'] }}\\{{ item }}"
     state: directory
   loop: "{{ windows_dev_directories }}"
+
+- name: Create Outlook Graph monitor directory
+  ansible.windows.win_file:
+    path: "{{ ansible_facts['env']['USERPROFILE'] }}\\{{ windows_dev_outlook_monitor_dir }}"
+    state: directory
+
+- name: Deploy Watch-OutlookGraph.ps1
+  ansible.windows.win_copy:
+    src: Watch-OutlookGraph.ps1
+    dest: "{{ ansible_facts['env']['USERPROFILE'] }}\\{{ windows_dev_outlook_monitor_dir }}\\Watch-OutlookGraph.ps1"
