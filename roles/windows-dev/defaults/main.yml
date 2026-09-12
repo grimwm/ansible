@@ -12,8 +12,8 @@ windows_dev_packages:
 
 # Directories created under the user profile.
 windows_dev_directories:
-  - "Documents\Repositories"
-  - "Documents\WSL"
+  - "Documents\\Repositories"
+  - "Documents\\WSL"
 
 # Install dir under %LOCALAPPDATA% for Watch-OutlookGraph.ps1
 windows_dev_outlook_monitor_dir: "Watch-OutlookGraph"
