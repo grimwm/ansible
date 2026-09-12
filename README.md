@@ -93,7 +93,7 @@ you pass `dev_machine=true` (which is what `make provision-dev` does).
 | `kitty` | | Installs the kitty terminal on Linux and macOS and deploys `~/.config/kitty/kitty.conf`. |
 | `iterm2` | | macOS only: installs iTerm2 via Homebrew Cask. |
 | `wsl2` | | Windows only: enables the WSL and Virtual Machine Platform features (rebooting if needed), updates the WSL kernel, sets WSL 2 as the default, installs and defaults `wsl_default_distribution`, and writes `~/.wslconfig`. |
-| `windows-dev` | yes | Windows only: installs dev tooling via winget (Windows Terminal, Git, VS Code, Docker Desktop, Postman, 7-Zip, Notepad++) and creates `Documents\Repositories` and `Documents\WSL`. |
+| `windows-dev` | yes | Windows only: installs dev tooling via winget (Windows Terminal, Git, VS Code, Docker Desktop, Postman, 7-Zip, Notepad++), creates `Documents\Repositories` and `Documents\WSL`, deploys `Watch-OutlookGraph.ps1` to `%LOCALAPPDATA%\Watch-OutlookGraph`, and adds a `Watch-OutlookGraph` shim on the user PATH via `%USERPROFILE%\bin`. |
 
 Shell configuration is deployed as drop-in files rather than by editing your
 rc files in place. Roles write to `~/.zshrc.d/*.zsh` and `~/.bashrc.d/*.sh`; the
@@ -117,6 +117,24 @@ Larger structures — the winget package list, the created Windows directories,
 the git alias list, and the `.wslconfig` resource limits — live in the
 corresponding `roles/*/defaults/main.yml` and are meant to be overridden there or
 via inventory vars.
+
+### Watch-OutlookGraph.ps1
+
+When `dev_machine=true` on Windows, the `windows-dev` role deploys
+`Watch-OutlookGraph.ps1` to `%LOCALAPPDATA%\Watch-OutlookGraph\` and installs a
+PATH shim at `%USERPROFILE%\bin\Watch-OutlookGraph.cmd` (adding that `bin`
+directory to the user PATH). After a new shell, you can run `Watch-OutlookGraph`
+without typing the full path.
+
+This PowerShell script polls Microsoft Graph for Outlook mail and dispatches
+messages to a webhook (e.g. n8n) for processing.
+
+The script is deployed only — it is **not** installed as a scheduled task or
+service. Run it manually (or via the shim) or set up your own scheduler pointing
+at the LocalAppData `.ps1`. Graph authentication and webhook configuration are
+outside the scope of this playbook; see the script's built-in help
+(`Get-Help "%LOCALAPPDATA%\Watch-OutlookGraph\Watch-OutlookGraph.ps1" -Full`)
+for usage.
 
 ## Prerequisites
 

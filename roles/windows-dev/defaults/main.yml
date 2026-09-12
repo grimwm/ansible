@@ -14,3 +14,9 @@ windows_dev_packages:
 windows_dev_directories:
   - "Documents\\Repositories"
   - "Documents\\WSL"
+
+# Install dir under %LOCALAPPDATA% for Watch-OutlookGraph.ps1
+windows_dev_outlook_monitor_dir: "Watch-OutlookGraph"
+
+# User PATH shim directory under %USERPROFILE% (Watch-OutlookGraph.cmd)
+windows_dev_bin_dir: "bin"
