@@ -13,16 +13,33 @@
 
 - name: Create Windows dev directories
   ansible.windows.win_file:
-    path: "{{ ansible_facts['env']['USERPROFILE'] }}\\{{ item }}"
+    path: "{{ ansible_facts['env']['USERPROFILE'] }}\{{ item }}"
     state: directory
   loop: "{{ windows_dev_directories }}"
 
-- name: Create Outlook Graph monitor directory
+- name: Create Outlook Graph monitor directory under LocalAppData
   ansible.windows.win_file:
-    path: "{{ ansible_facts['env']['USERPROFILE'] }}\\{{ windows_dev_outlook_monitor_dir }}"
+    path: "{{ ansible_facts['env']['LOCALAPPDATA'] }}\{{ windows_dev_outlook_monitor_dir }}"
     state: directory
 
 - name: Deploy Watch-OutlookGraph.ps1
   ansible.windows.win_copy:
     src: Watch-OutlookGraph.ps1
-    dest: "{{ ansible_facts['env']['USERPROFILE'] }}\\{{ windows_dev_outlook_monitor_dir }}\\Watch-OutlookGraph.ps1"
+    dest: "{{ ansible_facts['env']['LOCALAPPDATA'] }}\{{ windows_dev_outlook_monitor_dir }}\Watch-OutlookGraph.ps1"
+
+- name: Ensure user bin directory exists
+  ansible.windows.win_file:
+    path: "{{ ansible_facts['env']['USERPROFILE'] }}\{{ windows_dev_bin_dir }}"
+    state: directory
+
+- name: Deploy Watch-OutlookGraph PATH shim
+  ansible.windows.win_copy:
+    src: Watch-OutlookGraph.cmd
+    dest: "{{ ansible_facts['env']['USERPROFILE'] }}\{{ windows_dev_bin_dir }}\Watch-OutlookGraph.cmd"
+
+- name: Add user bin directory to PATH
+  ansible.windows.win_path:
+    elements:
+      - "{{ ansible_facts['env']['USERPROFILE'] }}\{{ windows_dev_bin_dir }}"
+    scope: user
+    state: present
