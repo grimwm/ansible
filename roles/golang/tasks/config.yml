@@ -25,19 +25,32 @@
     mode: "0644"
   when: ansible_facts["os_family"] != "Windows"
 
-- name: Set GOROOT environment variable (Windows)
+- name: Set Go environment variables (Windows)
   ansible.windows.win_environment:
-    name: GOROOT
-    value: "{{ golang_install_dir }}"
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
     level: user
     state: present
+  loop:
+    - name: GOROOT
+      value: "{{ golang_install_dir }}"
+    - name: GOPATH
+      value: "{{ ansible_facts['env']['USERPROFILE'] }}\\.local\\share\\go"
   when: ansible_facts["os_family"] == "Windows"
 
 - name: Add Go to PATH (Windows)
   ansible.windows.win_path:
     elements:
       - "{{ golang_install_dir }}\\bin"
-      - "{{ ansible_facts['env']['USERPROFILE'] }}\\go\\bin"
+      - "{{ ansible_facts['env']['USERPROFILE'] }}\\.local\\share\\go\\bin"
     scope: user
     state: present
+  when: ansible_facts["os_family"] == "Windows"
+
+- name: Remove default GOPATH bin from PATH (Windows)
+  ansible.windows.win_path:
+    elements:
+      - "{{ ansible_facts['env']['USERPROFILE'] }}\\go\\bin"
+    scope: user
+    state: absent
   when: ansible_facts["os_family"] == "Windows"
