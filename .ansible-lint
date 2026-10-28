@@ -1,0 +1,3 @@
+---
+# The strictest profile; `make lint` and CI both run ansible-lint with this.
+profile: production

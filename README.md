@@ -93,7 +93,7 @@ you pass `dev_machine=true` (which is what `make provision-dev` does).
 | `kitty` | | Installs the kitty terminal on Linux and macOS and deploys `~/.config/kitty/kitty.conf`. |
 | `iterm2` | | macOS only: installs iTerm2 via Homebrew Cask. |
 | `wsl2` | | Windows only: enables the WSL and Virtual Machine Platform features (rebooting if needed), updates the WSL kernel, sets WSL 2 as the default, installs and defaults `wsl_default_distribution`, and writes `~/.wslconfig`. |
-| `windows-dev` | yes | Windows only: installs dev tooling via winget (Windows Terminal, Git, VS Code, Docker Desktop, Postman, 7-Zip, Notepad++) and creates `Documents\Repositories` and `Documents\WSL`. |
+| `windows_dev` | yes | Windows only: installs dev tooling via winget (Windows Terminal, Git, VS Code, Docker Desktop, Postman, 7-Zip, Notepad++) and creates `Documents\Repositories` and `Documents\WSL`. |
 
 Shell configuration is deployed as drop-in files rather than by editing your
 rc files in place. Roles write to `~/.zshrc.d/*.zsh` and `~/.bashrc.d/*.sh`; the
@@ -107,7 +107,7 @@ Run `make vars` for the current list. All of these can be overridden with
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `dev_machine` | `false` | Install the developer toolchain: Go, Rust, Neovim, git config, and (on Windows) `windows-dev`. |
+| `dev_machine` | `false` | Install the developer toolchain: Go, Rust, Neovim, git config, and (on Windows) `windows_dev`. |
 | `git_user_name` | unset | Global git identity name. Not configured when unset. |
 | `git_user_email` | unset | Global git identity email. Not configured when unset. |
 | `golang_version` | `1.25.6` | Go toolchain version to install. |
@@ -133,6 +133,21 @@ sudo apt install ansible
 
 # Fedora/RHEL
 sudo dnf install ansible
+```
+
+Changes to the playbook must pass `make lint`, which runs `ansible-lint` with
+the `production` profile (`.ansible-lint`); CI runs the same check on every
+pull request. Install it next to Ansible:
+
+```bash
+# macOS
+brew install ansible-lint
+
+# Debian/Ubuntu
+sudo apt install ansible-lint
+
+# Fedora/RHEL
+sudo dnf install ansible-lint
 ```
 
 If you're on `ansible-core` instead, install the collections explicitly:

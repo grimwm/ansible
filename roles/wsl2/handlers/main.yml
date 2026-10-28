@@ -1,8 +1,8 @@
 ---
-- name: reboot windows
+- name: Reboot Windows
   ansible.windows.win_reboot:
   become: true
 
-- name: restart wsl
+- name: Restart WSL
   ansible.windows.win_command: wsl --shutdown
   changed_when: true

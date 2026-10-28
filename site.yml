@@ -2,8 +2,8 @@
 - name: Workstation bootstrap
   hosts: all
   gather_facts: true
-  vars:
-    # dev_machine: false  ## Install dev tools: golang, rust, nvim, git (true|false)
+  # Variables to pass with -e; `make vars` lists them.
+  # dev_machine: false  ## Install dev tools: golang, rust, nvim, git (true|false)
   roles:
     # Tagged "always" because it resolves homebrew_brew_bin, which the macOS
     # install tasks in tmux/kitty/iterm2/nvim consume. Narrowing a run with
@@ -41,7 +41,7 @@
     - role: wsl2
       when: ansible_facts["os_family"] == "Windows"
       tags: [wsl2, windows]
-    - role: windows-dev
+    - role: windows_dev
       when:
         - ansible_facts["os_family"] == "Windows"
         - dev_machine | default(false) | bool

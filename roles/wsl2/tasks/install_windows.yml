@@ -4,23 +4,23 @@
     name: Microsoft-Windows-Subsystem-Linux
     state: present
   become: true
-  notify: reboot windows
+  notify: Reboot Windows
 
 - name: Enable Virtual Machine Platform feature
   ansible.windows.win_optional_feature:
     name: VirtualMachinePlatform
     state: present
   become: true
-  notify: reboot windows
+  notify: Reboot Windows
 
 - name: Flush handlers so reboot (if needed) happens before WSL commands
   ansible.builtin.meta: flush_handlers
 
 - name: Update the WSL kernel
   ansible.windows.win_command: wsl --update
-  register: wsl_update
-  changed_when: "'No updates are available' not in wsl_update.stdout"
-  failed_when: wsl_update.rc != 0 and 'No updates' not in wsl_update.stdout
+  register: wsl2_update
+  changed_when: "'No updates are available' not in wsl2_update.stdout"
+  failed_when: wsl2_update.rc != 0 and 'No updates' not in wsl2_update.stdout
 
 - name: Set default WSL version to 2
   ansible.windows.win_command: wsl --set-default-version 2
@@ -30,7 +30,7 @@
   ansible.windows.win_command: wsl --list --quiet
   environment:
     WSL_UTF8: "1"
-  register: wsl_installed
+  register: wsl2_installed
   changed_when: false
   failed_when: false
 
@@ -42,7 +42,7 @@
       - --distribution
       - "{{ wsl_default_distribution }}"
       - --no-launch
-  when: wsl_default_distribution not in (wsl_installed.stdout_lines | default([]) | map('trim') | list)
+  when: wsl_default_distribution not in (wsl2_installed.stdout_lines | default([]) | map('trim') | list)
 
 - name: Set the default WSL distribution
   ansible.windows.win_command:
@@ -61,4 +61,4 @@
       swap={{ wsl_config.swap }}
       localhostForwarding={{ wsl_config.localhostForwarding | lower }}
     dest: "{{ ansible_facts['env']['USERPROFILE'] }}\\.wslconfig"
-  notify: restart wsl
+  notify: Restart WSL
