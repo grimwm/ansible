@@ -12,7 +12,7 @@ ARGS ?=
 # Files scanned by `make vars` for variables documented with a `## ` comment.
 VAR_SOURCES := site.yml $(wildcard roles/*/defaults/main.yml)
 
-.PHONY: help vars tags provision provision-dev
+.PHONY: help vars tags lint provision provision-dev
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -40,6 +40,10 @@ tags: ## List available --tags values
 		sed -n 's/.*TASK TAGS: \[\(.*\)\]/\1/p' | \
 		tr ',' '\n' | sed 's/^ *//;s/ *$$//' | sort -u | \
 		awk 'NF {printf "  %s\n", $$0}'
+
+lint: ## Lint the playbook and roles with ansible-lint
+	@command -v ansible-lint >/dev/null || { echo 'ansible-lint is missing; see Prerequisites in README.md' >&2; exit 1; }
+	ansible-lint
 
 provision: ## Provision this machine
 	$(PLAYBOOK) $(BECOME_FLAG) $(ARGS)

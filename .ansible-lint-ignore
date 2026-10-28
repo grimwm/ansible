@@ -1,0 +1,3 @@
+# Documented -e variables, kept under their public names: renaming them to the
+# wsl2_ prefix would break every command line that passes them.
+roles/wsl2/defaults/main.yml var-naming[no-role-prefix]
