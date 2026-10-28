@@ -89,7 +89,7 @@ you pass `dev_machine=true` (which is what `make provision-dev` does).
 | `rust` | yes | Installs Rust via `rustup`. Deploys a zsh drop-in (Unix) or adds `~/.cargo/bin` to the user PATH (Windows). |
 | `nvim` | yes | Installs Neovim — apt/dnf on Linux, Homebrew on macOS, winget on Windows — plus the tree-sitter CLI on Linux and macOS. Deploys `init.lua` to `~/.config/nvim` or `%LOCALAPPDATA%\nvim`. |
 | `git` | yes | Sets global git config on Unix: identity (only if `git_user_name`/`git_user_email` are set), aliases (`st`, `ci`, `co`, `br`, `amend`, `unstage`, `last`), `init.defaultBranch=main`, merge-on-pull, colored output, and prune-on-fetch. Deploys a git-aware prompt to `~/.zshrc.d/` and `~/.bashrc.d/`. |
-| `tmux` | | Installs tmux — apt/dnf on Linux, Homebrew on macOS, MSYS2 via winget on Windows — and deploys `tmux.conf`. |
+| `tmux` | | Installs tmux — apt/dnf on Linux, Homebrew on macOS, MSYS2 via winget on Windows — and deploys `tmux.conf`. On Linux with systemd it also adds a drop-in for every `tmux-spawn-*.scope`: a pane survives an OOM kill of one of its processes, and a pane is capped at 75% of RAM. |
 | `kitty` | | Installs the kitty terminal on Linux and macOS and deploys `~/.config/kitty/kitty.conf`. |
 | `iterm2` | | macOS only: installs iTerm2 via Homebrew Cask. |
 | `wsl2` | | Windows only: enables the WSL and Virtual Machine Platform features (rebooting if needed), updates the WSL kernel, sets WSL 2 as the default, installs and defaults `wsl_default_distribution`, and writes `~/.wslconfig`. |

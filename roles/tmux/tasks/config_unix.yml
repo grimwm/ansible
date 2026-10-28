@@ -4,3 +4,20 @@
     src: tmux.conf
     dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf"
     mode: "0644"
+
+# systemd puts each tmux pane in a tmux-spawn-*.scope; this drop-in applies to
+# all of them (systemd matches drop-in directories on the name's dash prefix).
+- name: Ensure the tmux scope drop-in directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/tmux-spawn-.scope.d"
+    state: directory
+    mode: "0755"
+  when: ansible_facts["system"] == "Linux" and ansible_facts["service_mgr"] == "systemd"
+
+- name: Keep a tmux pane alive when one of its processes is OOM-killed
+  ansible.builtin.copy:
+    src: tmux-spawn-oom.conf
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/tmux-spawn-.scope.d/oom.conf"
+    mode: "0644"
+  when: ansible_facts["system"] == "Linux" and ansible_facts["service_mgr"] == "systemd"
+  notify: Reload systemd user units
